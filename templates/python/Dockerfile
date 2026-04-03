@@ -6,4 +6,4 @@ COPY . .
 RUN pip install --no-cache-dir -r requirements.txt || true 
 
 
-CMD ["python", "run.py"]
+CMD ["python", "-u", "run.py"]

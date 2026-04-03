@@ -40,7 +40,7 @@ if [ $? -eq 0 ]; then # if last command exit code = $? -eq = equals 0 success
 
     imagename="$filename"
     docker build -t "$imagename" .
-    docker run -d --rm --name "${imagename}_container" "$imagename"
+    docker run -d --name "${imagename}_container" "$imagename"
 
 
 else 

@@ -3,14 +3,18 @@
 
 echo "Automatic setup."
 
-echo "Enter repository link: "
-read repolink
+if [ -z "$1" ]; then # z = is string empty
+    echo "Usage: $0 <gir_url>"
+    exit 1
+fi 
+
+repolink="$1"
 
 echo "Getting repository..."
 git clone "$repolink"
 
 if [ $? -eq 0 ]; then # if last command exit code = $? -eq = equals 0 success
-    filename=$(basename "$url" .git)
+    filename=$(basename "$repolink" .git)
     
     cd "$filename" || exit 1 # run second command if first one fails
 
@@ -18,16 +22,27 @@ if [ $? -eq 0 ]; then # if last command exit code = $? -eq = equals 0 success
     SHELLFILE="run.sh"
     if [ -f "$PYFILE" ]; then
         echo "Python application detected"
-        python3 run.py
+        
+        # container
+        cp templates/python/Dockerfile Dockerfile
+
 
     elif [ -f "$SHELLFILE" ]; then
         echo "Bash application detected"
-        bash run.sh
+        
+        # container
+        cp templates/bash/Dockerfile Dockerfile
 
     else
         echo "No entry point defined"
-        exit 1
+        cp templates/default/Dockerfile Dockerfile
     fi
+
+    imagename="$filename"
+    docker build -t "$imagename" .
+    docker run -d --rm --name "${imagename}_container" "$imagename"
+
+
 else 
     echo "Clone failed"
     exit 1

@@ -1,0 +1,8 @@
+Create sm-docker-test directory. 
+
+cd sm-docker-test 
+cp ../sm-docker/pripravi_izvajalno_okolje.sh pripravi_izvajalno_okolje.sh
+
+./pripravi_izvajalno_okolje https://github.com/Maercel/sm-docker.git
+
+Edit pripravi_izvajalno_okolje.sh to try each app (remove if statements). 
